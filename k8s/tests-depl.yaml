@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasks-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasks
+  template:
+    metadata:
+      labels:
+        app: tasks
+    spec:
+      containers:
+        - name: tasks
+          image: damilare77/tasks
+          ports:
+            - containerPort: 3000
+#          env:
+#            - name: MONGO_URI
+#              value: mongodb://mongo-cluster-ip-service:27017/tasks
+#            - name: JWT_KEY
+#              valueFrom:
+#                secretKeyRef:
+#                  key: JWT_KEY
+#                  name: jwt-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tasks-cluster-ip-service
+spec: #actual configuration the way the service behaves
+  type: ClusterIP
+  ports: #ports that the clusterIP will expose or be available on
+    - name: tasksp1
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: tasks
