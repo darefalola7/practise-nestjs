@@ -11,7 +11,16 @@ spec:
     - host: nest.dev
       http:
         paths:
-          - path: /?(.*)
+          - path: /tasks/?(.*)
             backend:
               serviceName: tasks-cluster-ip-service
               servicePort: 3000
+#          - path: /?(.*)
+#            backend:
+#              serviceName: postgres-cluster-ip-service
+#              servicePort: 5432
+#          - path: /pgadmin/?(.*)
+#            backend:
+#              serviceName: pgadmin-cluster-ip-service
+#              servicePort: 3000
+

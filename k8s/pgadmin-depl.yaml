@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+    spec:
+      containers:
+        - name: pgadmin
+          image: dpage/pgadmin4
+          ports:
+            - containerPort: 80
+          env:
+#            - name: PGADMIN_LISTEN_ADDRESS
+#              value: 127.0.0.1
+#            - name: PGADMIN_LISTEN_PORT
+#              value: "80"
+            - name: PGADMIN_DEFAULT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  key: pgadmin-email
+                  name: postgres-secret
+            - name: PGADMIN_DEFAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: pgadmin-password
+                  name: postgres-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin-nodeport-service
+spec: #actual configuration the way the service behaves
+  type: NodePort
+  ports: #ports that the clusterIP will expose or be available on
+    - name: pgadminp1
+      protocol: TCP
+      port: 3000
+      targetPort: 80
+      nodePort: 31515
+  selector:
+    app: pgadmin
