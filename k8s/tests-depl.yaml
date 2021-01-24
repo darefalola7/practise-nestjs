@@ -38,13 +38,13 @@ spec:
                 configMapKeyRef:
                   name: pg-configmap
                   key: database_url
-#            - name: MONGO_URI
-#              value: mongodb://mongo-cluster-ip-service:27017/tasks
-#            - name: JWT_KEY
-#              valueFrom:
-#                secretKeyRef:
-#                  key: JWT_KEY
-#                  name: jwt-secret
+            #            - name: MONGO_URI
+            #              value: mongodb://mongo-cluster-ip-service:27017/tasks
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: jwt-secret
+                  name: postgres-secret
 ---
 apiVersion: v1
 kind: Service

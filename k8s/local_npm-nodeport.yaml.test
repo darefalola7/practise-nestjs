@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-nodeport-service
+  name: local_npm-nodeport-service
 spec: #actual configuration the way the service behaves
   type: NodePort
   ports: #ports that the clusterIP will expose or be available on
-    - name: pgport
+    - name: localport
       protocol: TCP
-      port: 3001
-      targetPort: 5432
+      port: 40004
+      targetPort: 40004
   selector:
-    app: tasks-postgres
+    app: local_npm-postgres

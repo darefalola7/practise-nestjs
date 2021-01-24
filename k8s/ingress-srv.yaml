@@ -1,20 +1,29 @@
 #remember to install k8s ingress from: https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress #kind of object
 metadata:
   name: ingress-service
   annotations:
     kubernetes.io/ingress.class: nginx #create ingress controller based on nginx project
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
     - host: nest.dev
       http:
         paths:
-          - path: /tasks/?(.*)
+#          - path: /localnpm/?(.*)
+#            backend:
+#              service:
+#                name: local_npm-cluster-ip-service
+#                port:
+#                  number: 40005
+          - path: /?(.*)
+            pathType: Prefix
             backend:
-              serviceName: tasks-cluster-ip-service
-              servicePort: 3000
+              service:
+                name: tasks-cluster-ip-service
+                port:
+                  number: 3000
 #          - path: /?(.*)
 #            backend:
 #              serviceName: postgres-cluster-ip-service
