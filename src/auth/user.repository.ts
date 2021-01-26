@@ -2,7 +2,7 @@ import { Repository, EntityRepository } from 'typeorm';
 import { User } from './user.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { ErrorcodeEnum } from './errorcode.enum';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import {
   ConflictException,
   InternalServerErrorException,
@@ -13,7 +13,8 @@ export class UserRepository extends Repository<User> {
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { username, password } = authCredentialsDto;
     const salt = await bcrypt.genSalt();
-    const user = new User();
+    const user = this.create();
+
     user.username = username;
     user.password = await this.hashPassword(password, salt);
     user.salt = salt;

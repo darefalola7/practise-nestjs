@@ -18,6 +18,8 @@ spec:
           ports:
             - containerPort: 3000
           env:
+            - name: NODE_ENV
+              value: development
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
